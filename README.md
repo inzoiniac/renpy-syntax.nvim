@@ -30,14 +30,21 @@ Syntax Highlighting for [Ren'Py](https://www.renpy.org/) in Neovim
 
 #### With/Com Lazy.nvim
 
-If you're using/Usando o [lazy.nvim](https://github.com/folke/lazy.nvim):
+Put this in your lazy.vim settings, in `lua/plugins.lua` for example:
+Coloque isso nas suas configurações do lazy.vim, em `lua/plugins.lua` por exemplo:
 
 ```lua
-{
-  "inzoiniac/renpy-syntax.nvim",
-  lazy = false,
-}
-```
+require("lazy").setup({
+  {
+    "inzoiniac/renpy-syntax.nvim",
+    ft = "renpy",
+    -- Optional: load Lua configuration that activates syntax (if any)
+    -- Opcional: carregar configuração Lua que ativa o syntax (se houver)
+    config = function()
+      require("renpy-syntax").setup()
+    end,
+  },
+})
 
 #### Without plugin manager/Sem um gerenciador de plugins
 
@@ -55,14 +62,16 @@ git clone https://github.com/inzoiniac/renpy-syntax.nvim ~/.config/nvim/pack/plu
 
 ```
 renpy-syntax.nvim/
-├── README.md
-├── LICENSE
-├── init.lua
+├── lua/
+│   └── renpy-syntax/
+│       └── init.lua          # Lua module that can contain setup funtions/Módulo Lua que pode conter funções de setup
 ├── ftdetect/
-│   └── renpy.vim
-└── syntax/
-    └── renpy.vim
+│   └── renpy.vim             # Defines filetype for *.rpy files/Define filetype renpy para arquivos *.rpy
+├── syntax/
+│   └── renpy.vim             # Syntax highlighting rules for Ren'py/Regras de syntax highlighting para Ren'Py
+└── README.md
 ```
+
 
 ---
 
