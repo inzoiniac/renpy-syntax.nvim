@@ -1,1 +1,4 @@
-au BufRead, BufNewFile *.rpy set filetype=renpy
+augroup filetypedetect
+  autocmd!
+  autocmd BufRead,BufNewFile *.rpy setfiletype renpy
+augroup END
