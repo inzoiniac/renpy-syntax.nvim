@@ -45,6 +45,7 @@ require("lazy").setup({
     end,
   },
 })
+```
 
 #### Without plugin manager/Sem um gerenciador de plugins
 
