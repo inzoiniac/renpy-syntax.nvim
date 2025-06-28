@@ -62,8 +62,6 @@ renpy-syntax.nvim/
 ├── lua/
 │   └── renpy-syntax/
 │       └── init.lua          # Lua module that can contain setup funtions/Módulo Lua que pode conter funções de setup
-├── ftdetect/
-│   └── renpy.vim             # Defines filetype for *.rpy files/Define filetype renpy para arquivos *.rpy
 ├── syntax/
 │   └── renpy.vim             # Syntax highlighting rules for Ren'py/Regras de syntax highlighting para Ren'Py
 └── README.md
