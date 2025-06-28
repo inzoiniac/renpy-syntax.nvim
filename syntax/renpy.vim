@@ -35,10 +35,12 @@ highlight link renpyDotNamespace Identifier
 " === [5] Diálogos e Falas ===
 syntax match renpyCharacter /^[a-zA-Z0-9_]\+\s*\"/
 syntax match renpyDialogue /^ *\".\{-}\"/
-syntax match renpyTextTag /{[a-zA-Z0-9=_\.\/\[\]-]\+}/
+syntax match renpyTextTag /{\/\?\w\+\(=[^{} \t]*\)\?}/ containedin=renpyDialogue
+syntax match renpyInlineVariable /\[[a-zA-Z0-9_]\+\]/ containedin=renpyDialogue
 highlight link renpyCharacter Identifier
 highlight link renpyDialogue String
 highlight link renpyTextTag Special
+highlight link renpyInlineVariable Identifier 
 
 " === [6] Menus ===
 syntax keyword renpyMenu menu
