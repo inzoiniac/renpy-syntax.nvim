@@ -34,17 +34,13 @@ Put this in your lazy.vim settings, in `lua/plugins.lua` for example:
 Coloque isso nas suas configurações do lazy.vim, em `lua/plugins.lua` por exemplo:
 
 ```lua
-require("lazy").setup({
-  {
-    "inzoiniac/renpy-syntax.nvim",
-    ft = "renpy",
-    -- Optional: load Lua configuration that activates syntax (if any)
-    -- Opcional: carregar configuração Lua que ativa o syntax (se houver)
-    config = function()
-      require("renpy-syntax").setup()
-    end,
-  },
-})
+return {
+  "inzoiniac/renpy-syntax.nvim",
+  config = function()
+    require("renpy-syntax").setup()
+  end,
+}
+
 ```
 
 #### Without plugin manager/Sem um gerenciador de plugins
