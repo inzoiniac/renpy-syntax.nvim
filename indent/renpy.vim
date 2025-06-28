@@ -8,3 +8,8 @@ endif
 let b:bid_indent = 1
 
 runtime! indent/python.vim
+
+setlocal shiftwidth=4
+setlocal softtabstop=4
+setlocal tabstop=4
+setlocal expandtab
