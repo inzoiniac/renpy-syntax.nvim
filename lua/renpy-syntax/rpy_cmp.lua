@@ -1,3 +1,4 @@
+print("CARREGANDO rpy_cmp.lua - Versão Nova!")
 local cmp_ok, cmp = pcall(require, "cmp")
 if not cmp_ok then
 	return {}
@@ -114,7 +115,6 @@ label start:
 ```]],
 		},
 	},
-
 	{
 		label = "scene",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
@@ -122,22 +122,23 @@ label start:
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
-			value = [[**scene** - Clear layer and show background image
+			value = [[**scene** - Clear layer and show background image_name
 
-Syntax: `scene image_name [at transform] [with transition]`
+Syntax: isso está alterado!!! 'scene image_name [with transition]'
 
-Removes all displayables from a layer (default: master layer) and shows an image. Typically used for backgrounds.
+Removes all displayables from a layer (defaul: master layer) and shows an image. Typically used for backgrounds.
 
 Example:
 ```renpy
-scene bg room          # Clear and show room background
-scene bg park with dissolve  # Fade to park
-scene                  # Just clear the layer
+scene bg room      # Clear and show room background
+scene bg park with dissolve    # Fade to park
+scene      # Just clear the layer
 ```
 
-Use `show` to add images without clearing layer.]],
+Use `show`to add images without clearing layer.]],
 		},
 	},
+
 	{
 		label = "show",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
