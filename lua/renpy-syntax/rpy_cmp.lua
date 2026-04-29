@@ -1,4 +1,3 @@
-print("CARREGANDO rpy_cmp.lua - Versão Nova!")
 local cmp_ok, cmp = pcall(require, "cmp")
 if not cmp_ok then
 	return {}
@@ -10,7 +9,7 @@ local completion_items = {
 	{
 		label = "label",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "label ${1:name}:\n    $0",
+		insertText = [[label ${1:name}:]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -38,7 +37,7 @@ label chapter1:
 	{
 		label = "jump",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "jump ${1:label_name}",
+		insertText = [[jump ${1:label_name}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -63,7 +62,7 @@ Use `call` instead if you need to return.]],
 	{
 		label = "call",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "call ${1:label_name}",
+		insertText = [[call ${1:label_name}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -90,7 +89,7 @@ Can pass parameters: `call fight("goblin", hp=50)`]],
 	{
 		label = "return",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "return${1: ${2:value}}",
+		insertText = [[return ${1:value}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -118,13 +117,13 @@ label start:
 	{
 		label = "scene",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "scene ${1:image_name}${2: with ${3:dissolve}}",
+		insertText = [[scene ${1:image_name} with ${2:dissolve}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
 			value = [[**scene** - Clear layer and show background image_name
 
-Syntax: isso está alterado!!! 'scene image_name [with transition]'
+Syntax: 'scene image_name [with transition]'
 
 Removes all displayables from a layer (defaul: master layer) and shows an image. Typically used for backgrounds.
 
@@ -142,7 +141,7 @@ Use `show`to add images without clearing layer.]],
 	{
 		label = "show",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "show ${1:image_name}${2: at ${3:position}}${4: with ${5:dissolve}}",
+		insertText = [[show ${1:image_name} at ${2:position} with ${3:transition}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -159,8 +158,8 @@ show bg room with fade        # Show background with fade
 show overlay effect with dissolve
 ```
 
-Attributes can specify variants:
 ```renpy
+Attributes can specify variants:
 show eileen happy           # Shows eileen with happy expression
 show eileen sad at right    # Change expression and position
 ```]],
@@ -169,7 +168,7 @@ show eileen sad at right    # Change expression and position
 	{
 		label = "hide",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "hide ${1:image_name}${2: with ${3:dissolve}}",
+		insertText = [[hide ${1:image_name} with ${2:transition}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -191,7 +190,7 @@ Note: `hide` is rarely needed. Use `show` to change character sprites/expression
 	{
 		label = "with",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "with ${1:dissolve}",
+		insertText = [[with ${1:transition}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -219,7 +218,8 @@ scene bg park with fade  # Built into statement
 	{
 		label = "play",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = 'play ${1|music,sound,voice|} "${2:filename.ogg}"${3: fadeout ${4:1.0} fadein ${5:1.0}}',
+		insertText = [[play ${1|music,sound,voice|} ${2:"filename.ogg"} fadeout ${3:1.0} fadein ${4:1.0}]],
+		---'play ${1|music,sound,voice|} "${2:filename.ogg}"${3: fadeout ${4:1.0} fadein ${5:1.0}}',
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -245,7 +245,7 @@ play music ["song1.ogg", "song2.ogg"] # Playlist
 	{
 		label = "stop",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "stop ${1|music,sound,voice|}${2: fadeout ${3:1.0}}",
+		insertText = [[stop ${1|music,sound,voice|} fadeout ${2:1.0}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -287,7 +287,15 @@ queue music ["song2.ogg", "song3.ogg"]
 	{
 		label = "menu",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = 'menu:\n    "${1:What will you do?}"\n    \n    "${2:Choice 1}":\n        ${3:jump ${4:label_name}}\n    \n    "${5:Choice 2}":\n        $0',
+		insertText = [[menu:
+      "${1:Optional Caption}"
+
+      "${2:Choice 1}":
+          jump ${3:label_name}
+
+      "${4:Choice 2}":
+          call ${5:some_label}
+      ${0}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -316,8 +324,8 @@ menu:
 Conditional choices:
 ```renpy
 menu:
-    "Talk to friend":
-        jump talk_scene
+    "Run for your life":
+        jump run_scene
     "Fight" if player_brave:
         call combat
 ```
