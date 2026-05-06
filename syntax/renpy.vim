@@ -1,6 +1,4 @@
-" ================================
 " Ren'Py Syntax Highlighting
-" ================================
 
 " Protege contra múltiplas ativações
 if exists("b:current_syntax")

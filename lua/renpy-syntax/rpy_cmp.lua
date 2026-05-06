@@ -667,7 +667,7 @@ Example:
 ```renpy
 pause        # Wait for click
 pause 2.0    # Wait 2 seconds or click
-pause 1.5 hard  # Must wait 1.5 seconds
+$ renpy.pause(1.5, hard=True)  # Must wait 1.5 seconds
 ```
 
 Useful after scene changes or for dramatic timing.]],
