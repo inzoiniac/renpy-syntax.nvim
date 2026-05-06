@@ -121,20 +121,20 @@ label start:
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
-			value = [[**scene** - Clear layer and show background image_name
+			value = [[**scene** - Clear layer and show background image
 
-Syntax: 'scene image_name [with transition]'
+Syntax: `scene image_name [with transition]`
 
-Removes all displayables from a layer (defaul: master layer) and shows an image. Typically used for backgrounds.
+Removes all displayables from a layer (default: master layer) and shows an image. Typically used for backgrounds.
 
 Example:
 ```renpy
-scene bg room      # Clear and show room background
-scene bg park with dissolve    # Fade to park
-scene      # Just clear the layer
+scene bg room              # Clear and show room background
+scene bg park with dissolve  # Fade to park
+scene                      # Just clear the layer
 ```
 
-Use `show`to add images without clearing layer.]],
+Use `show` to add images without clearing layer.]],
 		},
 	},
 
@@ -158,8 +158,8 @@ show bg room with fade        # Show background with fade
 show overlay effect with dissolve
 ```
 
-```renpy
 Attributes can specify variants:
+```renpy
 show eileen happy           # Shows eileen with happy expression
 show eileen sad at right    # Change expression and position
 ```]],
@@ -218,8 +218,7 @@ scene bg park with fade  # Built into statement
 	{
 		label = "play",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = [[play ${1|music,sound,voice|} ${2:"filename.ogg"} fadeout ${3:1.0} fadein ${4:1.0}]],
-		---'play ${1|music,sound,voice|} "${2:filename.ogg}"${3: fadeout ${4:1.0} fadein ${5:1.0}}',
+		insertText = [[play ${1|music,sound,voice|} "${2:filename.ogg}" fadeout ${3:1.0} fadein ${4:1.0}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -238,7 +237,7 @@ Example:
 ```renpy
 play music "background.ogg" fadein 1.0
 play sound "explosion.mp3"
-play music ["song1.ogg", "song2.ogg"] # Playlist
+play music ["song1.ogg", "song2.ogg"]  # Playlist
 ```]],
 		},
 	},
@@ -266,7 +265,7 @@ stop sound               # Stop sound effects
 	{
 		label = "queue",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = 'queue ${1|music,sound,voice|} "${2:filename.ogg}"',
+		insertText = [[queue ${1|music,sound,voice|} "${2:filename.ogg}"${3: fadein ${4:1.0}}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -279,8 +278,9 @@ Queues audio file to play after current audio finishes. Useful for music playlis
 Example:
 ```renpy
 play music "intro.ogg"
-queue music "main_theme.ogg"  # Plays after intro
-queue music ["song2.ogg", "song3.ogg"]
+queue music "main_theme.ogg"            # Plays after intro
+queue music ["song2.ogg", "song3.ogg"]  # Queue a playlist
+queue music "next.ogg" fadein 1.0       # Fade in when it starts
 ```]],
 		},
 	},
@@ -288,14 +288,14 @@ queue music ["song2.ogg", "song3.ogg"]
 		label = "menu",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
 		insertText = [[menu:
-      "${1:Optional Caption}"
+    "${1:Optional Caption}"
 
-      "${2:Choice 1}":
-          jump ${3:label_name}
+    "${2:Choice 1}":
+        jump ${3:label_name}
 
-      "${4:Choice 2}":
-          call ${5:some_label}
-      ${0}]],
+    "${4:Choice 2}":
+        call ${5:some_label}
+    ${0}]],
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
@@ -330,7 +330,7 @@ menu:
         call combat
 ```
 
-Note: Each choice MUST have an action (jump, call, pass, etc)]],
+Note: Each choice MUST have an action (jump, call, pass, etc.)]],
 		},
 	},
 
@@ -435,33 +435,50 @@ For single line: `$ variable = value`]],
 		},
 	},
 	{
-		label = "init",
+		label = "init python",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
-		insertText = "init${1: ${2:priority}} python:\n    $0",
+		insertText = "init python:\n    $0",
 		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
-			value = [[**init** - Initialize game data before start
+			value = [[**init python** - Run Python at initialisation time
 
-Syntax: `init:` or `init priority python:`
-
-Code in init blocks runs before game starts. Used for:
-- Defining characters, images, transforms
-- Setting up variables
-- Configuration
+Executes before the game starts. Use for defining functions, classes, or any setup logic that `define`/`default` can't handle.
 
 Example:
 ```renpy
 init python:
     def custom_function():
         return "Hello"
+```
 
+Priority (optional): `init -1 python:` runs before default priority (0).]],
+		},
+	},
+	{
+		label = "init",
+		kind = cmp.lsp.CompletionItemKind.Keyword,
+		insertText = "init ${1:0}:\n    $0",
+		insertTextFormat = 2,
+		documentation = {
+			kind = "markdown",
+			value = [[**init** - Run Ren'Py statements at initialisation time
+
+Syntax: `init [priority]:`
+
+Executes `define`, `image`, `transform`, etc. before game start. Lower priority runs first.
+
+Example:
+```renpy
 init:
     define e = Character("Eileen")
     image bg room = "images/room.png"
+
+init -1:
+    define config.name = "My Game"
 ```
 
-Priority (optional): Controls execution order. Lower runs first (default: 0).]],
+Use `init python:` for arbitrary Python code.]],
 		},
 	},
 	{
@@ -484,7 +501,7 @@ define config.name = "My Visual Novel"
 define narrator = Character(None)
 ```
 
-For variables that change: use `default` instead.]],
+For variables that change during gameplay, use `default` instead.]],
 		},
 	},
 	{
@@ -498,7 +515,7 @@ For variables that change: use `default` instead.]],
 
 Syntax: `default name = value`
 
-Sets initial value for variable. Created on game start or if variable doesn't exist.
+Sets initial value for variable. Created on game start or if variable doesn't exist in a save.
 
 Example:
 ```renpy
@@ -530,7 +547,7 @@ Creates named transform for positioning, sizing, or animating displayables.
 
 Example:
 ```renpy
-transform left:
+transform left_side:
     xalign 0.0
     yalign 1.0
 
@@ -540,7 +557,7 @@ transform bounce:
     linear 0.5 yoffset 0
     repeat
 
-show eileen at left
+show eileen at left_side
 show ball at bounce
 ```]],
 		},
@@ -588,8 +605,8 @@ screen stats_display:
     frame:
         xalign 1.0 yalign 0.0
         vbox:
-            text "HP: {player_hp}"
-            text "MP: {player_mp}"
+            text "HP: [player_hp]"
+            text "MP: [player_mp]"
 
 # Show screen
 show screen stats_display
@@ -881,7 +898,7 @@ screen health_bar:
             ysize 20
 ```
 
-Can be interactive (for volume, brightness, etc) or just display.]],
+Can be interactive (for volume, brightness, etc.) or just display.]],
 		},
 	},
 
@@ -932,6 +949,8 @@ transform bounce:
 	{
 		label = "repeat",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
+		insertText = "repeat",
+		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
 			value = [[**repeat** - Loop ATL animation
@@ -1258,6 +1277,8 @@ screen options:
 	{
 		label = "nvl",
 		kind = cmp.lsp.CompletionItemKind.Keyword,
+		insertText = "nvl",
+		insertTextFormat = 2,
 		documentation = {
 			kind = "markdown",
 			value = "**nvl** - NVL-mode (Novel Visual) for full-screen text display",

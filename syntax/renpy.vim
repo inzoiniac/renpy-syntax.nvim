@@ -6,8 +6,7 @@ if exists("b:current_syntax")
 endif
 
 " === [1] Comandos principais do Ren'Py ===
-syntax keyword renpyStatement label jump call return python menu scene show hide with play stop queue pause window voice channel define image init transform default
-syntax keyword renpyStatement style transform screen define default init image
+syntax keyword renpyStatement label jump call return menu pause voice channel image
 highlight link renpyStatement Keyword
 
 " === [2] Controle de fluxo ===
@@ -15,34 +14,38 @@ syntax keyword renpyConditional if elif else while for break continue pass
 highlight link renpyConditional Conditional
 
 " === [3] Visual e Áudio ===
-syntax keyword renpyVisual scene show hide with at behind onlayer zorder transform
+syntax keyword renpyVisual scene show hide with at behind onlayer zorder
 highlight link renpyVisual Type
 
-syntax keyword renpyAudio play stop queue voice sound music
+syntax keyword renpyAudio play stop queue sound music
 highlight link renpyAudio PreProc
 
-syntax keyword renpyWindow window hide show
+syntax keyword renpyWindow window
 highlight link renpyWindow Statement
 
 " === [4] Definições, Variáveis e Configurações ===
-syntax keyword renpyDefine define default init python
+syntax keyword renpyDefine define default init python transform style
 syntax match renpyDotNamespace /\<\%(store\|persistent\|config\|renpy\)\.\w\+/
 highlight link renpyDefine Define
 highlight link renpyDotNamespace Identifier
 
 " === [5] Diálogos e Falas ===
-syntax match renpyCharacter /^[a-zA-Z0-9_]\+\s*\"/
-syntax match renpyDialogue /^ *\".\{-}\"/
-syntax match renpyTextTag /{\/\?\w\+\(=[^{} \t]*\)\?}/ containedin=renpyDialogue
-syntax match renpyInlineVariable /\[[a-zA-Z0-9_]\+\]/ containedin=renpyDialogue
-highlight link renpyCharacter Identifier
-highlight link renpyDialogue String
+syntax match renpyInlineVariable /\[[a-zA-Z0-9_.]\+\]/
+syntax match renpyTextTag /{\/\?\w\+\(=[^{} \t]*\)\?}/
+
+syntax match renpyNarration /^\s*".\{-}"/ contains=renpyInlineVariable,renpyTextTag
+syntax match renpyCharacterName /^\s*\w\+\ze\s\+"/ nextgroup=renpyCharacterString skipwhite
+syntax match renpyCharacterString /".\{-}"/ contained contains=renpyInlineVariable,renpyTextTag
+
+highlight link renpyNarration String
+highlight link renpyCharacterString String
+highlight link renpyCharacterName Special
 highlight link renpyTextTag Special
-highlight link renpyInlineVariable Identifier 
+highlight link renpyInlineVariable Special
 
 " === [6] Menus ===
 syntax keyword renpyMenu menu
-syntax match renpyMenuOption /^ *\".\{-}\" *:/
+syntax match renpyMenuOption /^\s*".\{-}"\s*:/
 highlight link renpyMenu Keyword
 highlight link renpyMenuOption Constant
 
@@ -51,20 +54,20 @@ syntax match renpyLabel /^label \zs\w\+/
 highlight link renpyLabel Function
 
 " === [8] Comentários ===
-syntax match renpyComment /^ *#.*$/
+syntax match renpyComment /\s*#.*$/
 highlight link renpyComment Comment
 
 " === [9] Layout e UI ===
-syntax keyword renpyLayoutProperty xpos ypos xanchor yanchor xalign yalign xoffset yoffset anchor align pos offset size
+syntax keyword renpyLayoutProperty xalign yalign xoffset yoffset anchor align pos offset size
 syntax keyword renpyLayoutProperty xsize ysize xminimum xmaximum yminimum ymaximum xfill yfill spacing order area padding
 highlight link renpyLayoutProperty Type
 
 " === [10] Estilo Visual ===
-syntax keyword renpyStyleProperty background foreground text_hover text_idle text_selected text_insensitive hover_sound insensitive alternate tooltip at auto action hovered unhovered
+syntax keyword renpyStyleProperty background foreground text_hover text_idle text_selected text_insensitive hover_sound insensitive alternate tooltip auto action hovered unhovered
 highlight link renpyStyleProperty Type
 
 " === [11] Elementos de Tela ===
-syntax keyword renpyScreenElement screen frame window side vbox hbox grid fixed viewport imagemap textbutton imagebutton text input bar timer key use modal tag has add default
+syntax keyword renpyScreenElement screen frame window side vbox hbox grid fixed viewport imagemap input bar timer key use modal tag has add default
 highlight link renpyScreenElement Structure
 
 " === [12] Widgets Interativos ===
@@ -92,7 +95,7 @@ syntax keyword renpyScreenAction SetCharacterVolume ToggleMute Language InLangua
 highlight link renpyScreenAction Function
 
 " === [17] Widgets Especiais e Input ===
-syntax keyword renpySpecialWidget input bar timer viewport scrollbar drag drop draggable droppable mousearea
+syntax keyword renpySpecialWidget drag drop draggable droppable mousearea
 highlight link renpySpecialWidget Statement
 
 syntax keyword renpyInputProperty value default length allow exclude pixel_width copypaste editable mask multiline prefix suffix clip caps
@@ -102,17 +105,16 @@ syntax keyword renpyInputValue VariableInputValue FieldInputValue FunctionInputV
 highlight link renpyInputValue Constant
 
 " === [18] Python embutido ===
-syntax region renpyPython start="^\s*python\s*:" end="^\s*$" contains=@python
+syntax region renpyPython start="^\s*python\s*:" end="^\ze\S" contains=@python keepend
 highlight link renpyPython Statement
 
-syntax region renpyInitPython start="^\s*init\s\+python\s*:" end="^\s*$" contains=@python
+syntax region renpyInitPython start="^\s*init\s\+python\s*:" end="^\ze\S" contains=@python keepend
 highlight link renpyInitPython PreProc
 
-syntax region renpyInitLevelPython start="^\s*init\s\+\d\+\s\+python\s*:" end="^\s*$" contains=@python
+syntax region renpyInitLevelPython start="^\s*init\s\+-\?\d\+\s\+python\s*:" end="^\ze\S" contains=@python keepend
 highlight link renpyInitLevelPython PreProc
 
 " === [Final] Inclui syntax do Python para regiões embutidas ===
 runtime! syntax/python.vim
 
 let b:current_syntax = "renpy"
-
