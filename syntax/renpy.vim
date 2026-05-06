@@ -33,9 +33,9 @@ highlight link renpyDotNamespace Identifier
 syntax match renpyInlineVariable /\[[a-zA-Z0-9_.]\+\]/
 syntax match renpyTextTag /{\/\?\w\+\(=[^{} \t]*\)\?}/
 
-syntax match renpyNarration /^\s*".\{-}"/ contains=renpyInlineVariable,renpyTextTag
+syntax match renpyNarration /^\s*".\{-}"/ contains=renpyInlineVariable,renpyTextTag,@Spell
 syntax match renpyCharacterName /^\s*\w\+\ze\s\+"/ nextgroup=renpyCharacterString skipwhite
-syntax match renpyCharacterString /".\{-}"/ contained contains=renpyInlineVariable,renpyTextTag
+syntax match renpyCharacterString /".\{-}"/ contained contains=renpyInlineVariable,renpyTextTag,@Spell
 
 highlight link renpyNarration String
 highlight link renpyCharacterString String
