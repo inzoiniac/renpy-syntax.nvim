@@ -5,6 +5,8 @@ if exists("b:current_syntax")
   finish
 endif
 
+runtime! syntax/python.vim
+
 " === [1] Comandos principais do Ren'Py ===
 syntax keyword renpyStatement label jump call return menu pause voice channel image
 highlight link renpyStatement Keyword
@@ -30,7 +32,7 @@ highlight link renpyDefine Define
 highlight link renpyDotNamespace Identifier
 
 " === [5] Diálogos e Falas ===
-syntax match renpyInlineVariable /\[[a-zA-Z0-9_.]\+\]/
+syntax match renpyInlineVariable /\[[a-zA-Z0-9_.!]\+\]/
 syntax match renpyTextTag /{\/\?\w\+\(=[^{} \t]*\)\?}/
 
 syntax match renpyNarration /^\s*".\{-}"/ contains=renpyInlineVariable,renpyTextTag,@Spell
@@ -114,7 +116,9 @@ highlight link renpyInitPython PreProc
 syntax region renpyInitLevelPython start="^\s*init\s\+-\?\d\+\s\+python\s*:" end="^\ze\S" contains=@python keepend
 highlight link renpyInitLevelPython PreProc
 
-" === [Final] Inclui syntax do Python para regiões embutidas ===
-runtime! syntax/python.vim
+syntax match renpyInlinePythonMark /^\s*\$/ nextgroup=renpyInlinePythonCode skipwhite
+syntax match renpyInlinePythonCode /.*$/ contained contains=@python
+highlight link renpyInlinePythonMark PreProc
+highlight link renpyInlinePythonCode Normal
 
 let b:current_syntax = "renpy"
